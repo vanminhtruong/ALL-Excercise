@@ -57,7 +57,3 @@ const updateStatusField = (newStatus) => {
   emits('update-status', newStatus)
 }
 </script>
-
-<style scoped>
-/* Add any additional styles if necessary */
-</style>

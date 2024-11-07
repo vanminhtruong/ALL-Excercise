@@ -13,7 +13,3 @@
 <script setup>
 import { RouterLink } from 'vue-router'
 </script>
-
-<style scoped>
-/* Add any additional styles if necessary */
-</style>

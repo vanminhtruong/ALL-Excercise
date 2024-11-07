@@ -4,7 +4,7 @@
     <h3 class="text-xl font-semibold text-gray-800 mb-4">Thêm Công Việc Mới</h3>
     <form @submit.prevent="handleSubmit" class="space-y-4">
       <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-        <!-- Task Content Input -->
+        
         <div class="form-group">
           <label class="block text-sm font-medium text-gray-700 mb-2">
             Nội dung công việc
@@ -17,7 +17,7 @@
           />
         </div>
 
-        <!-- Task Date Input -->
+        
         <div class="form-group">
           <label class="block text-sm font-medium text-gray-700 mb-2">
             Ngày thực hiện
@@ -30,7 +30,7 @@
           />
         </div>
 
-        <!-- Task Status Select -->
+        
         <div class="form-group">
           <label class="block text-sm font-medium text-gray-700 mb-2">
             Trạng thái
@@ -46,8 +46,6 @@
           </select>
         </div>
       </div>
-
-      <!-- Submit Button -->
       <div class="flex justify-end mt-4">
         <Button
           type="submit"
@@ -75,11 +73,11 @@ import { useTasksStore } from '../../stores/tasksStore'
 // Khởi tạo store
 const tasksStore = useTasksStore()
 
-const { taskContent, taskDate, taskStatus, addTask } = useTaskInput()
+const { taskContent, taskDate, taskStatus } = useTaskInput()
 
 const handleSubmit = async () => {
   const newTask = {
-    id: Date.now(), // Hoặc sử dụng UUID cho ID duy nhất
+    id: Date.now(),
     content: taskContent.value,
     date: taskDate.value,
     status: taskStatus.value,
@@ -104,7 +102,6 @@ const handleSubmit = async () => {
          transition-colors duration-200;
 }
 
-/* Animation cho form khi mount */
 @keyframes slideDown {
   from {
     opacity: 0;

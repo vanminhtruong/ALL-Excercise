@@ -1,4 +1,3 @@
-<!-- src/components/organisms/TaskItem.vue -->
 <template>
   <tr 
     v-if="task" 
@@ -87,29 +86,24 @@ const isHovered = ref(false)
 const selected = ref(props.isSelected)
 const taskCompleted = ref(props.task.completed)
 
-// Watch for changes in isSelected prop
 watch(() => props.isSelected, (newVal) => {
   selected.value = newVal
 })
 
-// Watch for changes in task.completed prop
 watch(() => props.task.completed, (newVal) => {
   taskCompleted.value = newVal
 })
 
-// Handle selection checkbox change
 const handleSelection = (value) => {
   selected.value = value
   emits('select', props.task.id, value)
 }
 
-// Handle task completion toggle
 const toggleCompletion = (value) => {
   taskCompleted.value = value
   emits('update-completion', props.task.id, value)
 }
 
-// Methods from useTaskItem composable
 const { 
   toggleComplete, 
   updateStatusField, 
@@ -122,7 +116,6 @@ const {
   updateDateField 
 } = useTaskItem(props.task)
 
-// Handle action events
 const handleEdit = () => {
   editTask()
 }

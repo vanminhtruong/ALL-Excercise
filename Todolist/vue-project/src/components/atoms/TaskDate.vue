@@ -44,7 +44,3 @@ const formattedDate = computed(() => {
   return new Date(props.date).toLocaleDateString()
 })
 </script>
-
-<style scoped>
-/* Add any additional styles if necessary */
-</style>
