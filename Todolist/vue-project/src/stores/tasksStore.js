@@ -2,39 +2,33 @@
 import { defineStore } from 'pinia'
 import { ref, computed, watch } from 'vue'
 
-// Khóa để lưu trữ trong localStorage
 const LOCAL_STORAGE_KEY = 'tasks';
 
 export const useTasksStore = defineStore('tasksStore', () => {
-  // Khởi tạo tasks từ localStorage nếu có, nếu không thì mảng trống
   const tasks = ref(JSON.parse(localStorage.getItem(LOCAL_STORAGE_KEY)) || []);
-
-  // Getter để lọc tasks dựa trên trạng thái
-  const filter = ref('all'); // Các giá trị: 'all', 'to do', 'done', 'reject'
+  const filter = ref('all')
+  const searchQuery = ref('');
 
   const filteredTasks = computed(() => {
-    if (filter.value === 'all') {
-      return tasks.value;
-    }
-    return tasks.value.filter(task => task.status === filter.value);
+    return tasks.value.filter(task => {
+      const matchesFilter = filter.value === 'all' || task.status === filter.value;
+      const matchesSearch = task.content.toLowerCase().includes(searchQuery.value.toLowerCase());
+      return matchesFilter && matchesSearch;
+    });
   });
 
-  // Thêm một task mới
   const addTask = (newTask) => {
     tasks.value.push(newTask);
   };
 
-  // Xóa một task theo ID
   const deleteTask = (taskId) => {
     tasks.value = tasks.value.filter(task => task.id !== taskId);
   };
 
-  // Xóa nhiều task theo danh sách ID
   const deleteTasks = (taskIds) => {
     tasks.value = tasks.value.filter(task => !taskIds.includes(task.id));
   };
 
-  // Cập nhật trạng thái hoàn thành của một task
   const toggleTaskCompletion = (taskId, isCompleted) => {
     const task = tasks.value.find(task => task.id === taskId);
     if (task) {
@@ -42,7 +36,6 @@ export const useTasksStore = defineStore('tasksStore', () => {
     }
   };
 
-  // Cập nhật nội dung của một task
   const updateTaskContent = (taskId, newContent) => {
     const task = tasks.value.find(task => task.id === taskId);
     if (task) {
@@ -50,7 +43,6 @@ export const useTasksStore = defineStore('tasksStore', () => {
     }
   };
 
-  // Cập nhật trạng thái của một task
   const updateTaskStatus = (taskId, newStatus) => {
     const task = tasks.value.find(task => task.id === taskId);
     if (task) {
@@ -58,7 +50,6 @@ export const useTasksStore = defineStore('tasksStore', () => {
     }
   };
 
-  // Cập nhật ngày của một task
   const updateTaskDate = (taskId, newDate) => {
     const task = tasks.value.find(task => task.id === taskId);
     if (task) {
@@ -66,7 +57,6 @@ export const useTasksStore = defineStore('tasksStore', () => {
     }
   };
 
-  // Thêm phương thức updateTask để cập nhật nhiều thuộc tính cùng lúc
   const updateTask = (taskId, updatedFields) => {
     const task = tasks.value.find(task => task.id === taskId);
     if (task) {
@@ -74,12 +64,14 @@ export const useTasksStore = defineStore('tasksStore', () => {
     }
   };
 
-  // Đặt bộ lọc
   const setFilter = (newFilter) => {
     filter.value = newFilter;
   };
 
-  // Lưu tasks vào localStorage mỗi khi tasks thay đổi
+  const setSearchQuery = (query) => {
+    searchQuery.value = query;
+  };
+
   watch(tasks, (newTasks) => {
     localStorage.setItem(LOCAL_STORAGE_KEY, JSON.stringify(newTasks));
   }, { deep: true });
@@ -88,6 +80,7 @@ export const useTasksStore = defineStore('tasksStore', () => {
     tasks,
     filteredTasks,
     filter,
+    searchQuery,
     addTask,
     deleteTask,
     deleteTasks,
@@ -95,7 +88,8 @@ export const useTasksStore = defineStore('tasksStore', () => {
     updateTaskContent,
     updateTaskStatus,
     updateTaskDate,
-    updateTask, // Thêm phương thức updateTask vào return
+    updateTask,
     setFilter,
+    setSearchQuery,
   }
 });
