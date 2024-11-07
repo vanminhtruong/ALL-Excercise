@@ -66,6 +66,14 @@ export const useTasksStore = defineStore('tasksStore', () => {
     }
   };
 
+  // Thêm phương thức updateTask để cập nhật nhiều thuộc tính cùng lúc
+  const updateTask = (taskId, updatedFields) => {
+    const task = tasks.value.find(task => task.id === taskId);
+    if (task) {
+      Object.assign(task, updatedFields);
+    }
+  };
+
   // Đặt bộ lọc
   const setFilter = (newFilter) => {
     filter.value = newFilter;
@@ -87,6 +95,7 @@ export const useTasksStore = defineStore('tasksStore', () => {
     updateTaskContent,
     updateTaskStatus,
     updateTaskDate,
+    updateTask, // Thêm phương thức updateTask vào return
     setFilter,
   }
 });
