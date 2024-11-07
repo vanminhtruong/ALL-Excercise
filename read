@@ -1,0 +1,18 @@
+1. Modular Architecture (Kiến trúc module hóa):
+    Tách ứng dụng thành các phần nhỏ độc lập
+    Dễ bảo trì và tái sử dụng
+
+2. Separation of Concerns (Tách biệt các mối quan tâm):
+    Tách logic nghiệp vụ khỏi giao diện
+    Trong Vue thường thể hiện qua việc tách:
+    <template> cho giao diện
+    <script> cho logic
+    <style> cho CSS
+
+3.  Single Responsibility Principle (Nguyên tắc đơn trách nhiệm):
+    Mỗi component chỉ nên đảm nhiệm một chức năng cụ thể
+    Giúp code dễ đọc, dễ bảo trì và tái sử dụng
+
+4. Atomic Design
+
+5. mô hình: composition
