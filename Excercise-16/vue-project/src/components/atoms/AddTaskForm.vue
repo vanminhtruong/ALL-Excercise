@@ -4,16 +4,16 @@
       v-model="title" 
       type="text" 
       placeholder="Tên công việc" 
-      class="p-2 border rounded" 
+      class="p-2 border rounded bg-gray-800 text-green-500 placeholder-green-300 transition duration-300 focus:outline-none focus:ring-2 focus:ring-green-500"
       required 
     />
     <input 
       v-model="date" 
       type="date" 
-      class="p-2 border rounded" 
+      class="p-2 border rounded bg-gray-800 text-green-500 transition duration-300 focus:outline-none focus:ring-2 focus:ring-green-500"
       required 
     />
-    <button type="submit" class="bg-blue-500 text-white p-2 rounded">
+    <button type="submit" class="bg-green-500 text-black p-2 rounded hover:bg-green-700 transition duration-300">
       Thêm Công Việc
     </button>
   </form>
@@ -43,6 +43,7 @@ const submitTask = () => {
   toast.success('Đã thêm công việc thành công!')
   title.value = ''
   date.value = dayjs().format('YYYY-MM-DD')
+  console.log("is: "+taskStore);
 }
 </script>
 

@@ -3,15 +3,39 @@ import { ref, computed, watch } from 'vue'
 import dayjs from 'dayjs'
 
 export const useTaskStore = defineStore('task', () => {
-  // Bước 1: Tải dữ liệu từ localStorage khi khởi tạo
+  // Tải dữ liệu từ localStorage khi khởi tạo
   const storedTasks = localStorage.getItem('tasks')
   const tasks = ref(storedTasks ? JSON.parse(storedTasks) : [])
 
+  // Thêm công việc mới
   const addTask = (task) => {
     tasks.value.push(task)
     console.log('Task added:', task) // Debug
   }
 
+  // Chỉnh sửa công việc
+  const editTask = (id, updatedTask) => {
+    const index = tasks.value.findIndex(task => task.id === id)
+    if (index !== -1) {
+      tasks.value[index] = { ...tasks.value[index], ...updatedTask }
+      console.log(`Task with id ${id} edited:`, tasks.value[index])
+    } else {
+      console.log(`Task with id ${id} not found.`)
+    }
+  }
+
+  // Xóa công việc
+  const deleteTask = (id) => {
+    const index = tasks.value.findIndex(task => task.id === id)
+    if (index !== -1) {
+      const [removedTask] = tasks.value.splice(index, 1)
+      console.log(`Task with id ${id} deleted:`, removedTask)
+    } else {
+      console.log(`Task with id ${id} not found.`)
+    }
+  }
+
+  // Các hàm lọc công việc theo ngày, tuần, tháng
   const getTasksByDate = (date) => {
     const targetDate = dayjs(date)
     const result = tasks.value.filter(task => dayjs(task.date).isSame(targetDate, 'day'))
@@ -49,11 +73,13 @@ export const useTaskStore = defineStore('task', () => {
     return result
   }
 
+  // Trạng thái lọc công việc
   const filteredTasks = ref({
     view: 'day', // 'day', 'week', 'month'
     date: dayjs().format('YYYY-MM-DD'),
   })
 
+  // Danh sách công việc đã lọc
   const filteredTaskList = computed(() => {
     const { view, date } = filteredTasks.value
     console.log(`Filtering tasks with view: ${view}, date: ${date}`) // Debug
@@ -67,17 +93,19 @@ export const useTaskStore = defineStore('task', () => {
     return []
   })
 
+  // Thiết lập chế độ xem
   const setView = (newView) => {
     filteredTasks.value.view = newView
     console.log(`View set to: ${newView}`) // Debug
   }
 
+  // Thiết lập ngày
   const setDate = (newDate) => {
     filteredTasks.value.date = newDate
     console.log(`Date set to: ${newDate}`) // Debug
   }
 
-  // Bước 2: Theo dõi sự thay đổi của tasks và lưu vào localStorage
+  // Theo dõi sự thay đổi của tasks và lưu vào localStorage
   watch(tasks, (newTasks) => {
     localStorage.setItem('tasks', JSON.stringify(newTasks))
     console.log('Tasks saved to localStorage')
@@ -86,6 +114,8 @@ export const useTaskStore = defineStore('task', () => {
   return {
     tasks,
     addTask,
+    editTask,
+    deleteTask,
     filteredTasks,
     filteredTaskList,
     setView,

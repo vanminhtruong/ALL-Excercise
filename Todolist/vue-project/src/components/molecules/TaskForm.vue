@@ -69,11 +69,14 @@ import Input from '../atoms/Input.vue'
 import Button from '../atoms/Button.vue'
 import { useTaskInput } from '../../composables/useTaskInput'
 import { useTasksStore } from '../../stores/tasksStore'
+import { useToast } from 'vue-toastification'
 
 // Khởi tạo store
 const tasksStore = useTasksStore()
 
 const { taskContent, taskDate, taskStatus } = useTaskInput()
+
+const toast = useToast()
 
 const handleSubmit = async () => {
   const newTask = {
@@ -84,7 +87,7 @@ const handleSubmit = async () => {
     completed: false,
   }
   tasksStore.addTask(newTask)
-  // Reset các trường input nếu cần
+  toast.success('Task add successfully!')
   taskContent.value = ''
   taskDate.value = ''
   taskStatus.value = 'to do'
